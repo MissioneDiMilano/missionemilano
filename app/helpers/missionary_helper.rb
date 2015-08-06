@@ -1,0 +1,2 @@
+module MissionaryHelper
+end

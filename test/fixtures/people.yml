@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 1
+  name: MyString
+  user_name: MyString
+  password_hash: MyString
+  release_date: 2015-08-03
+
+two:
+  type: 1
+  name: MyString
+  user_name: MyString
+  password_hash: MyString
+  release_date: 2015-08-03

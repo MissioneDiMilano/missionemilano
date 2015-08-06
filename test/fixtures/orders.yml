@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order_number: 1
+  companionship_number: 1
+  quantity: 1
+  language: MyString
+  ordering_missionary_number: 1
+  time_stamp: 2015-08-03 17:11:46
+
+two:
+  order_number: 1
+  companionship_number: 1
+  quantity: 1
+  language: MyString
+  ordering_missionary_number: 1
+  time_stamp: 2015-08-03 17:11:46
