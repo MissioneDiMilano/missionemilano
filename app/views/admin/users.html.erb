@@ -1,2 +1,28 @@
-<h1>Admin#users</h1>
-<p>Find me in app/views/admin/users.html.erb</p>
+<%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js" %>
+
+<h1>View and modify users here</h1>
+
+<p>Table for viewing MISSIONARY users - others are non-editable</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Release Date</th>
+    </tr>
+    
+    <% @users.each do |user| %>
+        <tr>
+            <td><%= user.name %></td>
+            <td><%= user.release_date %></td>
+        </tr>
+    <% end %>
+</table>
+
+<p>Form for uploading a spreadsheet to update users</p>
+
+<%= form_tag("/admin/users", multipart: true) do |form| %>
+    <%= file_field_tag "roster_file" %>
+    <%= submit_tag %>
+<% end %>
+
+<p>Button for rolling back database</p>

@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
-  def users
+  def users # For User admin
+    @users = Person.where("people.person_type > 3") # Get all missionary users.
   end
 
   def special_questions

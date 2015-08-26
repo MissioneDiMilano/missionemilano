@@ -3,6 +3,13 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.2'
+
+#Added according to tutorial for authentication.
+# Man, too many tutorials to be building "fast"
+
+gem 'bcrypt', '3.1.9'
+
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -47,3 +54,6 @@ gem 'coffee-script-source', '1.8.0'
 
 #Added according to tutorial for bootstrap:
 gem 'bootstrap-sass'
+
+
+

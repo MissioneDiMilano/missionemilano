@@ -1,2 +1,28 @@
-<h1>Missionary#orders</h1>
-<p>Find me in app/views/missionary/orders.html.erb</p>
+
+
+    <div class="pre-scrollable well category-well">
+
+            <% for i in 0..@urls.length-1 %>
+                <%= raw return_item_thumbnail(@urls[i],@names[i],i.to_s) %>
+            <% end %>
+             
+            
+    </div>
+    
+    <div class="pre-scrollable well item-well">
+        
+            <% for i in 0..@urls.length-1 %>
+                <%= raw return_item_thumbnail(@urls[i],@names[i],i.to_s) %>
+            <% end %>
+        
+    </div>
+    
+    <div class="pre-scrollable well viewer-well">
+        
+            <% for i in 0..@urls.length-1 %>
+                <%= raw return_item_thumbnail(@urls[i],@names[i],i.to_s) %>
+            <% end %>
+            
+    </div>
+
+

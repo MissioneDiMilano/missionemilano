@@ -4,9 +4,11 @@
   <title>Missionedimilano</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div class="container-fluid">
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class-"navbar-header">
@@ -21,7 +23,10 @@
     </div>
 </nav>
 
+
 <%= yield %>
 
+
+</div>
 </body>
 </html>
