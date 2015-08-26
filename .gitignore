@@ -11,3 +11,6 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore the zedstate file, it changes too much.
+/.zedstate
