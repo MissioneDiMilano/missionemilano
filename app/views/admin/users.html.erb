@@ -4,19 +4,41 @@
 
 <p>Table for viewing MISSIONARY users - others are non-editable</p>
 
-<table>
+<div class="row">
+<div class="col-xs-6">
+<table id="current_users" class="table-striped user-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Release Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @users.each do |user| %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.release_date %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+</div>
+
+<div class="col-xs-6">
+<table id="preview_users" class="table-striped user-table">
     <tr>
         <th>Name</th>
         <th>Release Date</th>
     </tr>
-    
     <% @users.each do |user| %>
         <tr>
-            <td><%= user.name %></td>
-            <td><%= user.release_date %></td>
+            <td></td>
+            <td></td>
         </tr>
     <% end %>
 </table>
+</div>
+</div>
 
 <p>Form for uploading a spreadsheet to update users</p>
 

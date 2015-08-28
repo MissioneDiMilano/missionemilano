@@ -1,3 +1,22 @@
 // Place all the styles related to the admin controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#preview_users {
+    display: none
+    }
+    
+.table-striped > tbody > tr.to-delete,
+.table-striped > tbody > tr:nth-child(odd).to-delete {
+    background-color: red;
+}
+
+.table-striped > tbody > tr.to-add,
+.table-striped > tbody > tr:nth-child(odd).to-add{
+    background-color: green;
+}
+
+.table-striped > tbody > tr.to-edit,
+.table-striped > tbody > tr:nth-child(odd).to-edit{
+    background-color: yellow;
+}
