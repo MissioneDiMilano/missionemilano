@@ -55,7 +55,7 @@
             "description": "Trainer. Can see regular missionary pages."
         }, 
         
-        "DTL": {
+        "DT": {
             "user_type_number": 10,
             "missionary": true,
             "description": "District Training Leader. Can see regular missionary pages."

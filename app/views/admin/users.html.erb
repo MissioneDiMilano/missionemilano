@@ -17,7 +17,7 @@
         <% @users.each do |user| %>
             <tr>
                 <td><%= user.name %></td>
-                <td><%= user.release_date %></td>
+                <td><%= user.person_type %></td>
             </tr>
         <% end %>
     </tbody>
@@ -44,7 +44,12 @@
 
 <%= form_tag("/admin/users", multipart: true) do |form| %>
     <%= file_field_tag "roster_file" %>
-    <%= submit_tag %>
+    <%= hidden_field_tag "names" %>
+    <%= hidden_field_tag "user_names" %>
+    <%= hidden_field_tag "types" %>
+    <%= hidden_field_tag "areas" %>
+    <%= hidden_field_tag "zones" %>
+    <%= submit_tag "Submit Roster", :id => "submit_users" %>
 <% end %>
 
 <p>Button for rolling back database</p>

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'missionary/parent_contact'
 
   get 'admin/users'
+  
+  post 'admin/users'
 
   get 'admin/special_questions'
 
