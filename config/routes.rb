@@ -31,9 +31,13 @@ Rails.application.routes.draw do
 
   get 'admin/orders_fill_view'
 
-  get 'admin/orders_inventory'
+  get 'admin/orders/inventory', to: 'admin#orders_inventory'
 
   get 'admin/orders_inventory_view'
+  
+  post 'admin/orders/inventory/ajax', to: 'admin#orders_inventory_ajax'
+  
+  get 'admin/orders/inventory/ajax', to: redirect('/admin/orders')
 
   get 'admin/parental_contact'
 

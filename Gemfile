@@ -56,5 +56,7 @@ gem 'coffee-script-source', '1.8.0'
 #Added according to tutorial for bootstrap:
 gem 'bootstrap-sass'
 
+#Added per the Heroku request...
+gem 'rails_12factor'
 
 

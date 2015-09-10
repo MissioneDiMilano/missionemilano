@@ -1,2 +1,67 @@
-<h1>Admin#orders_inventory</h1>
-<p>Find me in app/views/admin/orders_inventory.html.erb</p>
+<div class="container">
+	
+	<table class="table">
+		<thead>
+			<tr>
+				<td>Category</td>		
+				<td>Item name</td>
+				<td>Unit size</td>
+				<td>Language</td>
+				<td>In Stock</td>
+				<td>On Order Limit</td>
+			</tr>
+		</thead>
+		<tbody class="items-table-body">
+			<% @items.each do |item| %>
+			
+			
+			
+				<tr class="item-row" item_id="<%= item[:id] %>">
+					<td>
+						<select class="item-field category-selector <%= item[:category] %>">
+							<!-- will fill in automatically with jQuery -->
+						</select> 
+					</td>
+					<td>
+						<input class="item-field name-field" type="text" value="<%= item[:name] %> " />
+					</td>
+					<td>
+						<input class="item-field unit_size-field" type="number" value="<%= item[:unit_size] %>" />
+					</td>
+					<td>
+						<select class="item-field language-selector <%= item[:language] %>">
+							<!-- will fill in automatically with jQuery -->
+						</select>
+					</td>
+					<td>
+						<input class="item-field quantity-field" type="number" value="<%= item[:quantity] %>" />
+					</td>
+					<td>
+						<input class="item-field limit-field" type="number" value="<%= item[:limit] %>" />
+					</td>
+				</tr>
+				
+			
+			
+			<% end %>
+			
+			
+			
+			
+		</tbody>
+		
+	</table>
+	<div class="span12 text-center">
+		<button id="addItemRow" class="btn">+</button>
+	</div>
+	
+	
+	
+	
+</div>
+
+<!-- Pass languages and categories to client side. -->
+<script type="text/javascript">
+	var languages = <%= raw @languages %>;
+	var categories = <%= raw @categories %>;
+</script>

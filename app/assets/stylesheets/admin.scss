@@ -20,3 +20,38 @@
 .table-striped > tbody > tr:nth-child(odd).to-edit{
     background-color: yellow;
 }
+
+.affected-item {
+	background-image: linear-gradient(0deg, #FFFFFF, #ffFA96, #ffffff);
+	
+}
+
+.TODOaffected-item:hover:after {
+	background: #333;
+	background: rgba(0,0,0,.8);
+	border-radius: 5px;
+	bottom: 26px;
+	color: #fff;
+	content: "Another version of this item has been modified. Item will be saved.";
+	left: 20%;
+	padding: 5px 15px;
+	position: absolute;
+	z-index: 98;
+	width: 220px;
+}
+
+.edited-item {
+	background-image: linear-gradient(0deg, #FFFFFF, #fdd50c, #FFFFFF);
+}
+
+.saved-item {
+	background-image: linear-gradient(0deg, #FFFFFF, #d5fdc0, #FFFFFF);
+}
+
+.item-row td:first-child {
+	border-radius: 10px 0 0 10px;
+}
+
+.item-row td:last-child {
+	border-radius: 0 10px 10px 0;
+}

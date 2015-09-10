@@ -58,7 +58,7 @@ if (window.location.pathname == "/admin/users"){
     		alert(names.length);
     	});
     
-    })
+    });
     
     
     function createRef(letter,number){
@@ -163,4 +163,145 @@ if (window.location.pathname == "/admin/users"){
 		return this.slice(0);
 	};
     
+}
+
+if (window.location.pathname == "/admin/orders/inventory" || window.location.pathname == "/admin/orders/inventory"){
+	
+	$(document).ready(function(){
+	
+		console.log($('meta[name="csrf-token"]').attr("content"));
+		$.ajaxSetup({
+			//
+		});
+	
+		// Create HTML for the categoryand language pickers.
+		$.each(categories, function(i,e){
+			$(".category-selector").append("<option>"+e+"</option>");	
+			
+		});
+		
+		$.each(languages, function(i,e){
+			$(".language-selector").append("<option>"+e+"</option>");	
+			
+		});
+		
+		$.each(languages, function(i,e){
+			$("."+e).val(e);	
+		});
+		
+		// When clicking the addItemRow button, you should get a blank row for a new item.
+		
+		$("#addItemRow").click(function(){
+			
+			// Get new element (grab the first for semplicity)
+			newRow = $(".item-row:first").clone(true, true);
+			$(newRow).attr("item_id","-1"); // Will be a new item.
+			$(newRow).find(".category-selector").val("Book"); // Default value.
+			$(newRow).find(".name-field").val("New Item");
+			$(newRow).find(".unit_size-field").val(1);
+			$(newRow).find(".language-selector").val("Italian");
+			$(newRow).find(".quantity-field").val(10);
+			$(newRow).find(".limit-field").val(0);
+			
+			$(newRow).appendTo(".items-table-body");
+			
+			console.log("TODO: this is a problem in that it only works if there are already Items in the db.\
+				Hopefully we'll always have items - but if not, we'll get an error, and won't be \
+				able to add any more. Thus, we need to make a default case.");
+		});
+		
+		$(".item-row").on("click",".save-item-button", function(){
+														   // Gather information
+			 category = $(this).parent().parent().find(".category-selector").val();
+			 item_name = $(this).parent().parent().find(".name-field").val();
+			 unit_size = $(this).parent().parent().find(".unit_size-field").val();
+			 
+			 languages = [];
+			 quantities = [];
+			 limits = [];
+			 
+			 id = $(this).closest(".item-row").addClass("edited-item").attr("item_id");
+			 
+			 $(".item-row[item_id*='"+id+"']").each(function(i,e){
+				   languages.push($(e).find(".language-selector").val());
+				   quantities.push($(e).find(".quantity-field").val());
+				   limits.push($(e).find(".limit-field").val());
+				   
+				   
+			 });
+			 console.log(category, item_name, unit_size, languages, quantities, limits);
+			 console.log("TODO: create ajax request");
+			 
+			 $.ajax({
+			 	type: "POST",
+			 	url: "/admin/orders/inventory/ajax", 
+			 	
+			 	data: {
+			 		op: "Add/Edit item",
+			 		id: id,
+			 		category: category,
+			 		name: item_name,
+			 		unit_size: unit_size,
+			 		'languages[]': languages,
+			 		'quantities[]': quantities,
+			 		'limits[]': limits
+			 		},
+			 	done: function(data){
+			 		console.log(data);
+			 	},
+			 	beforeSend: function(xhr) {
+					 xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+					 console.log(xhr);
+				 }
+			 });
+			 
+		});
+		
+		/*
+		$(".save-item-button").click(function(){
+			// Gather information
+			category = $(this).parent().parent().find(".category-selector").val();
+			item_name = $(this).parent().parent().find(".name-field").val();
+			unit_size = $(this).parent().parent().find(".unit_size-field").val();
+			
+			languages = [];
+			quantities = [];
+			limits = [];
+			
+			id = $(this).closest(".item-row").addClass("edited-item").attr("item_id");
+			
+			$(".item-row[item_id*='"+id+"']").each(function(e,i){
+				languages.push($(e).children(".language-selector").val());
+				quantities.push($(e).children(".quantity-field").val());
+				limits.push($(e).children(".limit-field").val());
+				
+				
+			});
+			console.log(category, item_name, unit_size, languages, quantities, limits);
+			
+		
+		});
+		*/
+		// When a row is edited, we need to mark that row as to save 
+		// TODO update related information
+		$(".item-table-body").on("change",".item-field", function(){
+			// Find parent item-row's attr item_id
+			id = $(this).closest(".item-row").addClass("edited-item").attr("item_id");
+			$(this).parent().siblings().last().append('<button class="save-item-button"><span class="glyphicon glyphicon-floppy-open"></span> Save</button>');
+			// Find all rows with this id, add the edited_item class
+			$(".item-row[item_id*='"+id+"']").addClass("affected-item");
+			
+		})
+		
+		
+		
+		
+		
+		
+		
+	
+	});
+	
+	
+	
 }
