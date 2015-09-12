@@ -188,33 +188,220 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 		$.each(languages, function(i,e){
 			$("."+e).val(e);	
 		});
+		/*
+		$.each(ids, function(i,e){
+			
+			validLangs = validLangsForId(e);
+			
+			$.each(validLangs, function(i,e){
+				$()	
+			});
+			
+			$(".new-lang-picker").append("<li><a href='#' class='new-lang-option'>"+e+"</a></li>");
+		});
+		*/
+		$(".locals-group").each(function(i,e){
+			currentLangs = [];
+			notCurrentLangs = [];
+			
+			$(this).find(".language-field").each(function(i2,e2){
+				currentLangs.push($(e2).text().trim());
+				console.log(currentLangs);
+			});
+			
+			
+			
+			$.each(languages, function(i2,e2){
+				if (currentLangs.indexOf(e2) < 0){
+					notCurrentLangs.push(e2);
+					$(e).find(".new-lang-picker").append("<li><a href='#' class='new-lang-option'>"+e2+"</a></li>");
+				}
+			});
+			
+			$(e).find(".new-lang-picker").append("<li><a href='#' class='new-lang-option'>Other Language</a></li>");
+			//$(e).find(".new-language-field").hide();
+			
+		});
+		
 		
 		// When clicking the addItemRow button, you should get a blank row for a new item.
 		
 		$("#addItemRow").click(function(){
+			/*
+			* New accordion method is too complex for this. 
 			
 			// Get new element (grab the first for semplicity)
 			newRow = $(".item-row:first").clone(true, true);
 			$(newRow).attr("item_id","-1"); // Will be a new item.
 			$(newRow).find(".category-selector").val("Book"); // Default value.
 			$(newRow).find(".name-field").val("New Item");
-			$(newRow).find(".unit_size-field").val(1);
+			$(newRow).find(".unit-size-field").val(1);
 			$(newRow).find(".language-selector").val("Italian");
 			$(newRow).find(".quantity-field").val(10);
 			$(newRow).find(".limit-field").val(0);
+			*/
 			
-			$(newRow).appendTo(".items-table-body");
+			nextIndex = (parseInt($(".local-group").last().attr("id").match(/\d+/))+1).toString();
 			
-			console.log("TODO: this is a problem in that it only works if there are already Items in the db.\
-				Hopefully we'll always have items - but if not, we'll get an error, and won't be \
-				able to add any more. Thus, we need to make a default case.");
+			newItem = "<div class='panel panel-default'>\
+					<div class='item-row panel-heading' data-toggle='collapse' data-parent='#item-accordion' href='#collapse"+nextIndex+"'>\
+						<div class='row'>\
+							<input name='id' type='hidden' class='item-field item-id-field' value='"+nextIndex+"' />\
+							<span class='col-xs-4'>\
+							<span class='btn-group item-save-delete'>\
+								<button class='no-collapse btn btn-xs btn-success save-item-btn'><span class='glyphicon glyphicon-ok'></span></button>\
+								<button class='no-collapse btn btn-xs btn-danger delete-item-btn'><span class='glyphicon glyphicon-remove'></span></button>\
+							</span>\
+								<select name='category' class='no-collapse item-field category-selector Book'>\
+									<!-- will fill in automatically with jQuery -->\
+								</select>\
+							</span>\
+							<span class='col-xs-4'>\
+								<input name='item-name' type='text' class='no-collapse item-field item-name-field' value='New Item'/>\
+							</span>\
+							<span class='col-xs-4'>\
+								<input name='unit-size' type='number' class='no-collapse item-field unit-size-field' value='1'/>\
+							</span>\
+						</div>\
+					</div>\
+					<div class='local-group panel-collapse collapse in' id='collapse"+nextIndex+"'>\
+						<div class='panel-body locals-group'>\
+							<div class='local-header row'>\
+								<h3 class='col-xs-4'>Language</h3>\
+								<h3 class='col-xs-4'>In Stock</h3>\
+								<h3 class='col-xs-4'>Order Limit</h3>\
+							</div>\
+						<div class='row'>\
+								<span class='col-xs-12 text-center new-lang-area'>\
+									<div class='btn-group'>\
+										<button type='button' class='btn btn-primary dopdown-toggle' data-toggle='dropdown'>\
+											<span class='caret'></span>\
+											<span class='sr-only'>Toggle Dropdown</span>\
+										</button>\
+										<ul class='new-lang-picker dropdown-menu' role='menu'>\
+											<!-- will fill in automatically with jQuery -->\
+										</ul>\
+										<button type='button' class='addLanguageRow btn btn-primary'>Add</button>\
+										<input type='text' class='btn btn-small new-language-field' value='Other Language' />\
+									</div>\
+								</span>\
+							</div>\
+						</div>\
+					</div>\
+			</div>"
+			
+			
+		
+			
+			$(newItem).appendTo("#item-accordion");
+		
+			$.each(categories, function(i,e){
+				$(".panel-default").last().find(".category-selector").append("<option>"+e+"</option>");	
+				
+			});
+			
+			
+
 		});
+		
+		$("#item-accordion").on("click",".no-collapse",function(e){
+			console.log(e);
+			e.stopPropagation();
+		})
+		
+		$("#item-accordion").on("click",".save-item-btn",function(){
+			// Gather info and save this item to the server.
+			itemPanel = $(this).closest(".panel");
+			
+			id = $(itemPanel).find(".item-id-field").val().toString();
+			console.log(id);
+			
+			category = $(itemPanel).find(".category-selector").val();
+			item_name = $(itemPanel).find(".item-name-field").val();
+			unit_size = $(itemPanel).find(".unit-size-field").val();
+			
+			languages = [];
+			quantities = [];
+			limits = [];
+			
+			$(itemPanel).find(".language-field").each(function(i,l){languages.push($(l).text().trim())});
+			$(itemPanel).find(".quantity-field").each(function(i,q){quantities.push($(q).val())});
+			$(itemPanel).find(".limit-field").each(function(i,l){limits.push($(l).val())});
+			
+			console.log(languages);
+			
+			$.ajax({
+				type: "POST",
+				url: "/admin/orders/inventory/ajax", 
+				
+				data: {
+					op: "Add/Edit item",
+					id: id,
+					category: category,
+					name: item_name,
+					unit_size: unit_size,
+					'languages[]': languages,
+					'quantities[]': quantities,
+					'limits[]': limits
+					},
+				done: function(data){
+					console.log(data);
+					console.log("We got done");
+				},
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+					console.log(xhr);
+				}
+			});
+			
+		});
+		
+		$("#item-accordion").on("click", ".addLanguageRow", function(){
+			console.log("hello?");
+			// Validate current box's content. NOT "Other Language"
+			newLang = $(this).parent().children(".new-language-field").val();
+			if (newLang.toLowerCase() == "Other Language".toLowerCase()){
+				// don't do anything, we need a better language.
+				alert("TODO: Get a better modal box for this thing... we don't want to use alert. \n Anyway, you need to actually specify a new language");
+			} else {
+				// Add a new row
+				$("\
+				<div class='row'>\
+					<span class='col-xs-4'>\
+						<button class='btn btn-xs btn-danger modify-local-btn remove-local-btn'>\
+							Delete\
+						</button>\
+						<p class='item-field language-field "+newLang+"'>"+newLang+"</p>\
+					</span>\
+					<span class='col-xs-4'>\
+						<input type='number' class='item-field quantity-field' value='0'>\
+					</span>\
+					<span class='col-xs-4'>\
+						<input type='number' class='item-field limit-field' value='0'>\
+					</span>\
+				</div>").insertBefore($(this).closest(".row"));
+				
+			}
+		});
+		
+		
+		$("#item-accordion").on("click", ".new-lang-option",function(){
+			
+			if ($(this).text() == "Other Language"){
+				$(this).closest(".new-lang-area").find(".new-language-field").val($(this).text()).show().focus();
+				$(this).closest(".new-lang-area").find(".addLanguageRow").text("Add");
+			} else {
+				$(this).closest(".new-lang-area").find(".new-language-field").val($(this).text()).hide();
+				$(this).closest(".new-lang-area").find(".addLanguageRow").text("Add "+$(this).text());
+			}
+		});
+		
 		
 		$(".item-row").on("click",".save-item-button", function(){
 														   // Gather information
 			 category = $(this).parent().parent().find(".category-selector").val();
 			 item_name = $(this).parent().parent().find(".name-field").val();
-			 unit_size = $(this).parent().parent().find(".unit_size-field").val();
+			 unit_size = $(this).parent().parent().find(".unit-size-field").val();
 			 
 			 languages = [];
 			 quantities = [];
@@ -258,11 +445,7 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 		});
 		
 		/*
-		$(".save-item-button").click(function(){
-			// Gather information
-			category = $(this).parent().parent().find(".category-selector").val();
-			item_name = $(this).parent().parent().find(".name-field").val();
-			unit_size = $(this).parent().parent().find(".unit_size-field").val();
+		$(".save-item-button").click(function(){unit-size-fieldunit_size-field").val();
 			
 			languages = [];
 			quantities = [];

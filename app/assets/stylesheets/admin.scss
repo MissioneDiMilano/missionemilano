@@ -55,3 +55,38 @@
 .item-row td:last-child {
 	border-radius: 0 10px 10px 0;
 }
+
+.item-row {
+	display: block;
+}
+
+.new-language-field {
+	//display: none;
+}
+
+.item-field {
+	border-radius: 6px;
+	padding: 3px;
+}
+
+.add-lang-button-input {
+	margin-left: 10px;
+}
+
+span.new-lang-area > .btn-group > button.addLanguageRow {
+	//padding: 1px 12px;
+	border-radius: 0px 4px 4px 0px !important;
+}
+
+input.new-language-field {
+	border: 1px rgb(46, 109, 164) solid;
+	margin-left: -10px;
+}
+
+.new-lang-area {
+	margin-top: 10px;
+}
+
+div.local-row > span.col-xs-4 > * {
+	display: inline-block;
+}

@@ -1,58 +1,88 @@
 <div class="container">
 	
-	<table class="table">
-		<thead>
-			<tr>
-				<td>Category</td>		
-				<td>Item name</td>
-				<td>Unit size</td>
-				<td>Language</td>
-				<td>In Stock</td>
-				<td>On Order Limit</td>
-			</tr>
-		</thead>
-		<tbody class="items-table-body">
-			<% @items.each do |item| %>
-			
-			
-			
-				<tr class="item-row" item_id="<%= item[:id] %>">
-					<td>
-						<select class="item-field category-selector <%= item[:category] %>">
-							<!-- will fill in automatically with jQuery -->
-						</select> 
-					</td>
-					<td>
-						<input class="item-field name-field" type="text" value="<%= item[:name] %> " />
-					</td>
-					<td>
-						<input class="item-field unit_size-field" type="number" value="<%= item[:unit_size] %>" />
-					</td>
-					<td>
-						<select class="item-field language-selector <%= item[:language] %>">
-							<!-- will fill in automatically with jQuery -->
-						</select>
-					</td>
-					<td>
-						<input class="item-field quantity-field" type="number" value="<%= item[:quantity] %>" />
-					</td>
-					<td>
-						<input class="item-field limit-field" type="number" value="<%= item[:limit] %>" />
-					</td>
-				</tr>
-				
-			
-			
-			<% end %>
-			
-			
-			
-			
-		</tbody>
+	<div class="item-header row">
+		<h3 class="col-xs-4">Category</h3>
+		<h3 class="col-xs-4">Item name</h3>
+		<h3 class="col-xs-4">Unit size</h3>
+	</div>
+	<div class="panel-group" id="item-accordion">
+		<% @items.each_with_index do |item, index| %>
+			<div class="panel panel-default">
+				<div class="item-row panel-heading" data-toggle="collapse" data-parent="#item-accordion" href="#collapse<%= item[:category] %>">
+					<div class="row">
+						<input name="id" type="hidden" class="item-field item-id-field" value="<%= item[:id] %>" />
+						<span class="col-xs-4">
+							<span class="btn-group item-save-delete">
+								<button class="no-collapse btn btn-xs btn-success save-item-btn"><span class="glyphicon glyphicon-ok"></span></button>
+								<button class="no-collapse btn btn-xs btn-danger delete-item-btn"><span class="glyphicon glyphicon-remove"></span></button>
+							</span>
+							<select name="category" class="no-collapse item-field category-selector <%= item[:category] %>">
+								<!-- will fill in automatically with jQuery -->
+							</select>
+						</span>
+						<span class="col-xs-4">
+							<input name="item-name" type="text" class="no-collapse item-field item-name-field" value="<%= item[:name] %>"/>
+						</span>
+						<span class="col-xs-4">
+							<input name="unit-size" type="number" class="no-collapse item-field unit-size-field" value="<%= item[:unit_size] %>"/>
+						</span>
+					</div>
+				</div>
+				<div class="local-group panel-collapse collapse in" id="collapse<%= item[:category] %>">
+					<div class="panel-body locals-group">
+						<div class="local-header row">
+							<h3 class="col-xs-4">Language</h3>
+							<h3 class="col-xs-4">In Stock</h3>
+							<h3 class="col-xs-4">Order Limit</h3>
+						</div>
+						<% item[:languages].each_with_index do |lang, ind| %>
+							<div class="row local-row">
+								<span class="col-xs-4">
+									<button class="btn btn-xs btn-danger modify-local-btn remove-local-btn">
+										Delete
+									</button>
+									<p class="item-field language-field <%= lang %>">
+										<%= lang %>
+									</p>
+								</span>
+								<span class="col-xs-4">
+									<input name="number" class="item-field quantity-field" value="<%= item.quantities[ind] %>" />
+								</span>
+								<span class="col-xs-4">
+									<input name="number" class="item-field limit-field" value="<%= item.limits[ind] %>" />
+								</span>
+							</div>
+						<% end %>
+						<div class="row">
+							<span class="col-xs-12 text-center new-lang-area">
+								<div class="btn-group">
+									<button type="button" class="btn btn-primary dopdown-toggle" data-toggle="dropdown">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="new-lang-picker dropdown-menu" role="menu">
+										<!-- will fill in automatically with jQuery -->
+									</ul>
+									
+									<button type="button" class="addLanguageRow btn btn-primary">Add</button>
+									<input type="text" class="btn btn-small new-language-field" value="Other Language" />
+									
+								</div>
+								
+							</span>
+						</div>
+						
+					</div>
+				</div>
+		</div>
+		<% end %>
 		
-	</table>
+		
+	</div>
+	
+	
 	<div class="span12 text-center">
-		<button id="addItemRow" class="btn">+</button>
+		<button id="addItemRow" class="btn btn-primary">Add Item</button>
 	</div>
 	
 	
@@ -64,4 +94,5 @@
 <script type="text/javascript">
 	var languages = <%= raw @languages %>;
 	var categories = <%= raw @categories %>;
+	var ids = <%= raw @ids %>;
 </script>

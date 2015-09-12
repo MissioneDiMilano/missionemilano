@@ -129,23 +129,24 @@ class AdminController < ApplicationController
   	@items = []
   	@categories = []
   	@languages = []
-  	
+  	@ids = []
   	
   	all_items.each do |i|
-  	
+  		@ids.append(i.id);
   		unless @categories.include?(i.category)
   			@categories.append(i.category)
   		end
   		
   	
   		i.languages.each_with_index do |l, index|
-			@items.append({:id => i.id, :name =>  i.name, :unit_size => i.unit_size, :language =>  l, :quantity =>  i.quantities[index], :limit =>  i.limits[index]})
+			#@items.append({:id => i.id, :name =>  i.name, :unit_size => i.unit_size, :language =>  l, :quantity =>  i.quantities[index], :limit =>  i.limits[index]})
 			unless @languages.include?(l)
 				@languages.append(l)
 			end
 			
  		end
   	end
+  	@items = all_items
   	
 =begin
 	# No longer needed. Change strategy to send all orders/inventory ajax requests to orders/inventory/ajax.
@@ -235,7 +236,7 @@ class AdminController < ApplicationController
 				 current_item.limits = params[:limits]
 				 message = "Item '"+current_item.name+"' saved."
 			   rescue ActiveRecord::RecordNotFound  #we hope, if we get this error, that the params[:id] is -1, and not some error.
-				  current_item = Item.new(:name => params[:name], :category => params[:category], :unit_sizes => params[:unit_size], :languages => params[:languages], :quantities => params[:quantities], :limits => params[:limits])
+				  current_item = Item.new(:name => params[:name], :category => params[:category], :unit_size => params[:unit_size], :languages => params[:languages], :quantities => params[:quantities], :limits => params[:limits])
 				  item_created = true
 				  message = "Item '"+current_item.name+"' created."
 			  end
