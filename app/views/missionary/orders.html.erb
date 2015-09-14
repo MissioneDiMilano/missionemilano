@@ -1,15 +1,13 @@
 
 
-    <div class="pre-scrollable well category-well">
+    <div class="pre-scrollable well category-well item-narrower-well">
 
-            <% for i in 0..@urls.length-1 %>
-                <%= raw return_item_thumbnail(@urls[i],@names[i],i.to_s) %>
-            <% end %>
+            <% limitses
              
             
     </div>
     
-    <div class="pre-scrollable well item-well">
+    <div class="pre-scrollable well item-well item-narrower-well">
         
             <% for i in 0..@urls.length-1 %>
                 <%= raw return_item_thumbnail(@urls[i],@names[i],i.to_s) %>

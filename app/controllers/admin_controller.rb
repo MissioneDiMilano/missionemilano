@@ -1,4 +1,8 @@
 class AdminController < ApplicationController
+	
+	before_action :require_login
+	
+	
   def users # For User admin
     @users = Person.where("people.person_type > 3") # Get all missionary users.
     
@@ -53,7 +57,7 @@ class AdminController < ApplicationController
     		if person.length == 0
     			# It person doesn't exist, create it.
     			
-    			person = Person.create(person_type: person_types[new_person_types[index]]["user_type_number"], name: name, user_name: new_user_names[index], password: "nephi27")
+    			person = Person.create(person_type: @person_types[new_person_types[index]]["user_type_number"], name: name, user_name: new_user_names[index], password: "nephi27")
     			person.save
     			
     			
@@ -272,4 +276,17 @@ class AdminController < ApplicationController
 
   def baptismal_submission
   end
+  
+  private
+  def require_login
+  	
+  	unless logged_in? && current_user.person_type <= 4 
+  		redirect_to login_path
+  	end
+  	
+  	
+  end
+  
+  
+  
 end
