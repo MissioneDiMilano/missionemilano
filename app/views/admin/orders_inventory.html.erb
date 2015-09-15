@@ -8,7 +8,7 @@
 	<div class="panel-group" id="item-accordion">
 		<% @items.each_with_index do |item, index| %>
 			<div class="panel panel-default">
-				<div class="item-row panel-heading" data-toggle="collapse" data-parent="#item-accordion" href="#collapse<%= item[:category] %>">
+				<div class="item-row panel-heading" data-toggle="collapse" data-parent="#item-accordion" href="#collapse<%= item[:id] %>">
 					<div class="row">
 						<input name="id" type="hidden" class="item-field item-id-field" value="<%= item[:id] %>" />
 						<span class="col-xs-4">
@@ -16,7 +16,7 @@
 								<button class="no-collapse btn btn-xs btn-success save-item-btn"><span class="glyphicon glyphicon-ok"></span></button>
 								<button class="no-collapse btn btn-xs btn-danger delete-item-btn"><span class="glyphicon glyphicon-remove"></span></button>
 							</span>
-							<select name="category" class="no-collapse item-field category-selector <%= item[:category] %>">
+							<select name="category" default-category="<%= item[:category] %>" class="no-collapse item-field category-selector <%= item[:category] %>">
 								<!-- will fill in automatically with jQuery -->
 							</select>
 						</span>
@@ -28,7 +28,7 @@
 						</span>
 					</div>
 				</div>
-				<div class="local-group panel-collapse collapse in" id="collapse<%= item[:category] %>">
+				<div class="local-group panel-collapse collapse" id="collapse<%= item[:id] %>">
 					<div class="panel-body locals-group">
 						<div class="local-header row">
 							<h3 class="col-xs-4">Language</h3>

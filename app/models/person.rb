@@ -11,7 +11,7 @@ class Person < ActiveRecord::Base
     
     
     def get_area
-    	myName = this.name
+    	myName = self.name
     	all_areas = Area.all
     	all_areas.each do |a|
     		if (myName.eql?(a.person_one) || myName.eql?(a.person_two) || myName.eql?(a.person_three))

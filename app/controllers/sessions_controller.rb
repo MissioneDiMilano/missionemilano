@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def new
-  	if logged_in?
+  	if logged_in? && current_user.person_type <= 3
+  		redirect_to "/admin/"
+  	elsif logged_in? 
   		redirect_to "/missionary/"
   	end
   	

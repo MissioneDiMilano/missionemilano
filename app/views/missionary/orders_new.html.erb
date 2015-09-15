@@ -1,2 +1,30 @@
-<h1>Missionary#orders_new</h1>
-<p>Find me in app/views/missionary/orders_new.html.erb</p>
+
+
+<div class="pre-scrollable well category-well item-narrower-well">
+
+		<% @categories.each_with_index do |cat, index| %>
+			<%= raw return_category_thumbnail(cat, [index]) %>
+		<% end %>
+		 
+		
+</div>
+
+<div class="pre-scrollable well item-well item-narrower-well">
+	
+		<% @names.each_with_index do |name, index| %>
+		
+			<%= raw return_item_thumbnail(name, @categories[index], [index]) %>
+		
+		<% end %>
+	
+</div>
+
+<div class="pre-scrollable well viewer-well">
+	
+		<% for i in 0..@urls.length-1 %>
+			<%= raw return_item_thumbnail(@names[i],"hey",[i]) %>
+		<% end %>
+		
+</div>
+
+

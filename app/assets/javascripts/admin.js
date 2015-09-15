@@ -180,6 +180,11 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			
 		});
 		
+		$(".category-selector").each(function(){
+			
+			$(this).val($(this).attr("default-category"));
+		})
+		
 		$.each(languages, function(i,e){
 			$(".language-selector").append("<option>"+e+"</option>");	
 			

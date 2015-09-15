@@ -1,5 +1,27 @@
 Rails.application.routes.draw do
 
+  post 'ajax/orders'
+
+  post 'ajax/special_questions'
+
+  post 'ajax/inventory'
+
+  post 'ajax/parent_contacts'
+
+  post 'ajax/baptismal_submissions'
+  
+  get 'ajax/orders', to: redirect('/')
+
+  get 'ajax/special_questions', to: redirect('/')
+
+  get 'ajax/inventory', to: redirect('/')
+
+  get 'ajax/parent_contacts', to: redirect('/')
+
+  get 'ajax/baptismal_submissions', to: redirect('/')
+
+  get 'ajax', to: redirect('/')
+
   root 'sessions#new'
 	
   get 'sessions/new'
@@ -8,7 +30,7 @@ Rails.application.routes.draw do
 
   get 'missionary/orders'
 
-  get 'missionary/orders_new'
+  get 'missionary/orders/new', to: 'missionary#orders_new'
 
   get 'missionary/special_questions'
 

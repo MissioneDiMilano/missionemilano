@@ -141,7 +141,7 @@ class AdminController < ApplicationController
   			@categories.append(i.category)
   		end
   		
-  	
+  		i.languages ||= []
   		i.languages.each_with_index do |l, index|
 			#@items.append({:id => i.id, :name =>  i.name, :unit_size => i.unit_size, :language =>  l, :quantity =>  i.quantities[index], :limit =>  i.limits[index]})
 			unless @languages.include?(l)
