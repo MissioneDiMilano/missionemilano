@@ -15,7 +15,8 @@ module MissionaryHelper
 	def return_thumbnail(picture_url, title, element_classes, cat_attr="")
 		classes = element_classes.join(" ")
 		string_builder = ""
-		string_builder = string_builder + '<div class="col-xs-4 col-md-2">'
+		#string_builder = string_builder + '<div class="col-xs-4 col-md-2">'
+		string_builder = string_builder + '<div class="thumbnail-holder">'
 		string_builder = string_builder + (('<div class="thumbnail select-component '+classes.to_s) + '"')
 		unless cat_attr.eql?("")
 			string_builder = string_builder + ((' cat-attr="'+ cat_attr)+'"')	

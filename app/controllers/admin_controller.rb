@@ -5,12 +5,11 @@ class AdminController < ApplicationController
 	
   def users # For User admin
     @users = Person.where("people.person_type > 3") # Get all missionary users.
-    
-    
+    json_text = Rails.application.assets.find_asset("user_types.json").source
+	@person_types = ActiveSupport::JSON.decode(json_text)["user_types"]
+	
     if request.post? && params.include?(:names) && params.include?(:user_names) && params.include?(:types) && params.include?(:areas) # If it's a post method, we should be updating.
-    	json_text = Rails.application.assets.find_asset("user_types.json").source
-    	@person_types = ActiveSupport::JSON.decode(json_text)["user_types"]
-
+ 
 		current_areas = Area.all
     	all_people = Person.all
     	
@@ -21,6 +20,7 @@ class AdminController < ApplicationController
     	new_areas = params[:areas].split("|")
     	new_zones = params[:zones].split("|")
     	new_areas_unique = new_areas.uniq
+    	puts new_areas_unique
     	new_areas_comp_count = [0]*new_areas_unique.length 
     	
     	# First, check for old people to delete.
@@ -36,7 +36,7 @@ class AdminController < ApplicationController
 				Person.destroy(person)
 			elsif person.person_type > 3
 				# Set everyone to be inactive - we'll set the active people to their new positions next
-				person.person_type = person_types["inactive"]["user_type_number"]
+				person.person_type = @person_types["inactive"]["user_type_number"]
 				person.save
     		end
     	end
@@ -72,6 +72,7 @@ class AdminController < ApplicationController
     		
     		# Update this person's area.
     		#
+    		# byebug
 			his_area = new_areas[index]
 			his_zone = new_zones[index]
 			his_areas_index = new_areas_unique.index(his_area)

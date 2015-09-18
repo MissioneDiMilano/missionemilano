@@ -13,6 +13,7 @@ if (window.location.pathname == "/admin/users"){
     var areas = [];
     var zones = [];
 
+	var userTypes = [];
     
     function loadExcel(input){
         console.log("parseexcel");
@@ -32,10 +33,29 @@ if (window.location.pathname == "/admin/users"){
         
     }
     
-    
+    function getTitleForPersonType(type){
+		if (userTypes.length == 0){
+			var fetchedJSON = $.get("/assets/user_types.json", function(data){
+					var parsedJSON = JSON.parse(data);
+					var types_names = Object.keys(parsedJSON["user_types"]);
+					for (var i = 0; i < types_names.length; i++){
+						userTypes.append(parsedJSON[types_names[i]]["user_type_number"],types_names[i]);
+					}
+			});
+		}
+		
+		for (var i = 0; i < usertypes.length; i++){
+			if (userTypes[i][0] == type){
+				return userTypes[i][1];
+			  }
+		}
+		return "Unknown";
+	}
     
     
     $(document).ready(function(){
+     
+     	
         
         $("#roster_file").change(function(){
             console.log("changed");
@@ -44,7 +64,7 @@ if (window.location.pathname == "/admin/users"){
                 
             } 
             if (!(this.value.substr(-4) == ".xls")){
-                alert("Please insert a valid '.xls' file (that's the default downloaded one).");
+                alert('Please insert a valid ".xls" file (i.e. the downloaded "Organization Roster - Excel" IMOS report).');
             }
     	});
     	
@@ -109,7 +129,7 @@ if (window.location.pathname == "/admin/users"){
         
         
         // Now that we know when our data begins, ends, and where, parse it.
-        
+        console.log("TODO: you need to update it to parse the input whether you include or exclude separate name and fields, or whether there are senior couples, or not");
         for (var i = begin_data; i < end_data; i++){
             names.push(sheet[createRef("A", i)].v);
             user_names.push(sheet[createRef("H",i)].v);
@@ -144,14 +164,14 @@ if (window.location.pathname == "/admin/users"){
         	$("#current_users tbody tr").each(function(i2,e2){
         		//console.log(e2);
         		if (e > e2.children[0].InnerText){
-        			e2.insertBefore('<tr class="to-add"><td>'+e+'</td><td>'+positions[i]+'</td></tr>');
+        			e2.insertBefore('<tr class="to-add"><td>'+e+'</td><td>'+getTitleForPersonType(positions[i])+'</td></tr>');
         			inserted = true;
         			return false;		
         		}
         	});
         	
         	if (!inserted){
-        		$("#current_users tbody").append('<tr class="to-add"><td>'+e+'</td><td>'+positions[i]+'</td></tr>');
+        		$("#current_users tbody").append('<tr class="to-add"><td>'+e+'</td><td>'+getTitleForPersonType(positions[i])+'</td></tr>');
         	}
         	
         });

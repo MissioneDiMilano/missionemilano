@@ -1,6 +1,22 @@
+<% provide(:title, "User Management") %>
+
 <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js" %>
 
 <h1>View and modify users here</h1>
+
+<p>Form for uploading a spreadsheet to update users</p>
+
+<%= form_tag("/admin/users", multipart: true) do |form| %>
+	<%= file_field_tag "roster_file", "class" => "btn btn-primary" %>
+	<%= hidden_field_tag "names" %>
+	<%= hidden_field_tag "user_names" %>
+	<%= hidden_field_tag "types" %>
+	<%= hidden_field_tag "areas" %>
+	<%= hidden_field_tag "zones" %>
+	<%= submit_tag "Submit Roster", :id => "submit_users", "class" => "btn btn-warning" %>
+<% end %>
+
+<p>Button for rolling back database</p>
 
 <p>Table for viewing MISSIONARY users - others are non-editable</p>
 
@@ -10,14 +26,14 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Release Date</th>
+            <th>Position</th>
         </tr>
     </thead>
     <tbody>
         <% @users.each do |user| %>
             <tr>
                 <td><%= user.name %></td>
-                <td><%= user.person_type %></td>
+                <td><%= getTitleForPersonType(user.person_type) %></td>
             </tr>
         <% end %>
     </tbody>
@@ -40,16 +56,4 @@
 </div>
 </div>
 
-<p>Form for uploading a spreadsheet to update users</p>
 
-<%= form_tag("/admin/users", multipart: true) do |form| %>
-    <%= file_field_tag "roster_file" %>
-    <%= hidden_field_tag "names" %>
-    <%= hidden_field_tag "user_names" %>
-    <%= hidden_field_tag "types" %>
-    <%= hidden_field_tag "areas" %>
-    <%= hidden_field_tag "zones" %>
-    <%= submit_tag "Submit Roster", :id => "submit_users" %>
-<% end %>
-
-<p>Button for rolling back database</p>

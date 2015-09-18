@@ -2,7 +2,7 @@
 
 <div class="pre-scrollable well category-well item-narrower-well">
 
-		<% @categories.each_with_index do |cat, index| %>
+		<% @unique_categories.each_with_index do |cat, index| %>
 			<%= raw return_category_thumbnail(cat, [index]) %>
 		<% end %>
 		 
@@ -12,19 +12,40 @@
 <div class="pre-scrollable well item-well item-narrower-well">
 	
 		<% @names.each_with_index do |name, index| %>
-		
 			<%= raw return_item_thumbnail(name, @categories[index], [index]) %>
-		
 		<% end %>
 	
 </div>
 
 <div class="pre-scrollable well viewer-well">
 	
-		<% for i in 0..@urls.length-1 %>
-			<%= raw return_item_thumbnail(@names[i],"hey",[i]) %>
-		<% end %>
-		
+		<div class="item-viewer">
+			<h2 class="item-name-view iv-clearable"></h2>
+			<h3 class="item-category-view iv-clearable"></h3>
+			<p class="item-unit-size-view iv-clearable"></p>
+			<div class="item-locals-header row">
+				<span class="col-xs-3">Language</span>
+				<span class="col-xs-3">To Order</span>
+				<span class="col-xs-3">Your post-order total</span>
+			</div>
+			<div class="item-locals-view row iv-clearable"></div>
+			<button class="btn btn-success iv-order-add">Add to Order</button>
+		</div>
 </div>
 
+<div class="shopping-cart container-fluid">
+	<div class="shopping-cart-header row">
+		<span class="col-xs-3"><p>Item</p></span>
+		<span class="col-xs-3"><p>Order Amount</p></span>
+		<span class="col-xs-3"><p>New Total</p></span>
+	</div>
+	<div class="shopping-cart-list">
+		
+	</div>
+</div>
 
+<!-- Pass languages and categories to client side. -->
+<script type="text/javascript">
+	var items = <%= raw @items.to_json %>;
+	var oldOrders = <%= raw @area_orders.to_json %>;
+</script>
