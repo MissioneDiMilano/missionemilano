@@ -1,0 +1,96 @@
+{
+    "user_types": {
+        "admin": {
+            "user_type_number": 1,
+            "missionary": false,
+            "description": "A user who has all power on the admin side of things. Since he's not a missionary, he doesn't see the missionary side."
+        }, 
+        
+        "clerk": {
+            "user_type_number": 2,
+            "missionary": false,
+            "description": "The clerk. Can see clerk related pages."
+        },
+        
+        "secretary": {
+            "user_type_number": 3,
+            "missionary": false,
+            "description": "The secretary. Can see secretary related pages."
+        },
+        
+        "AP": {
+            "user_type_number": 4,
+            "missionary": true,
+            "description": "Assistants to the President. Can see regular missionary pages."
+        },
+        
+        "ZL": {
+            "user_type_number": 5,
+            "missionary": true,
+            "description": "Zone Leaders. Can see regular missionary pages."
+        }, 
+        
+        "ZDL": {
+        	"user_type_number": 6,
+        	"missionary": true,
+        	"description": "Zone leaders who serve as District Leaders. Can see regular missionary pages."
+        
+        },
+        
+        "STL": {
+            "user_type_number": 7,
+            "missionary": true,
+            "description": "Sister Training Leaders. Can see regular missionary pages."
+        },
+        
+        "DL": {
+            "user_type_number": 8, 
+            "missionary": true,
+            "description": "District Leaders. Can see regular missionary pages."
+        },
+        
+        "TR": {
+            "user_type_number": 9,
+            "missionary": true,
+            "description": "Trainer. Can see regular missionary pages."
+        }, 
+        
+        "DT": {
+            "user_type_number": 10,
+            "missionary": true,
+            "description": "District Training Leader. Can see regular missionary pages."
+        }, 
+        
+        "NM": {
+            "user_type_number": 11,
+            "missionary": true,
+            "description": "New Missionary. Can see regular missionary pages."
+        }, 
+        
+        "SC": {
+            "user_type_number": 12,
+            "missionary": true,
+            "description": "Senior companion. Can see regular missionary pages."
+        },
+        
+        "JC": {
+            "user_type_number": 13,
+            "missionary": true,
+            "description": "Junior companion. Can see regular missionary pages."
+        },
+        
+        "inactive": {
+        	"user_type_number": 14,
+        	"missionary": true,
+        	"description": "A missionary no longer in the field. Will be deleted with time."
+        },
+        
+        "unknown": {
+        	"user_type_number": 15,
+        	"missionary": true, 
+        	"description": "A missionary with an unknown position. Check for typos, or consider adding new positions in /public/assets/user_types.json"
+        }
+
+    }
+    
+}
