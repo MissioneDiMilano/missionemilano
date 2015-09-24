@@ -190,7 +190,7 @@ if (window.location.pathname == "/missionary/orders/new"){
 						<p class='iv-language-view'>"+foundItem.languages[j]+"</p>\
 					</span>\
 					<span class='col-xs-3'>\
-						<input class='iv-quantity-view' type='number' value='1'/>\
+						<input class='iv-quantity-view' type='number' value='"+ getQuantityForItem(fountItem.name, fountItem.languages[j]) +"'/>\
 					</span>\
 					<span class='col-xs-3'>\
 						<p class='iv-total-viewer'></p>\
@@ -280,14 +280,15 @@ if (window.location.pathname == "/missionary/orders/new"){
 				// For each language
 				for (var j = 0; j < newOrderItem.languages.length; j++){
 					var langIndex = shoppingCart.orderBuilder.items[i].languages.indexOf(newOrderItem.languages[j]);
+					console.log(shoppingCart.orderBuilder.items[i]+" - "+newOrderItem.languages[j]);
 					if (langIndex<0){
 						// Doesn't contain this language, add it in.
 						shoppingCart.orderBuilder.items[i].languages.push(newOrderItem.languages[j]);
 						shoppingCart.orderBuilder.items[i].quantities.push(newOrderItem.quantities[j]);
 						added = true;
 					} else {
-						// it contains it.
-						shoppingCart.orderBuilder.items[i].quantities[langIndex] += newOrderItem.quantities[j];
+						// it contains it. Replace with our new one.
+						shoppingCart.orderBuilder.items[i].quantities[langIndex] = newOrderItem.quantities[j];
 						added = true;
 						
 					}
@@ -299,6 +300,45 @@ if (window.location.pathname == "/missionary/orders/new"){
 		}
 	
 	}
+	
+	function getQuantityForItem(name, lang){
+	    var langIndex = null;
+	    for (var i = 0; i < shoppingCart.orderBuilder.items.length; i++){
+	        if (shoppingCart.orderBuilder.items[i].name == name && (langIndex = shoppingCart.orderBuilder.items[i].languages.indexOf(lang)) > -1){
+	            return shoppingCart.orderBuilder.items[i].quantities[langIndex];
+	        }
+	    }    
+	
+	}
+	
+	function submitOrder(){
+	    // Build data string...
+	    var dataJSON = {};
+	    for (var i = 0; i < shoppingCart.orderBuilder.items.length; i++){
+	        for (var j = 0; j < shoppingCart.orderBuilder.items[i].languages.length; j++){
+	            dataJSON[shoppingCart.orderBuilder.items[i].name][shoppingCart.orderBuilder.items[i].languages[j]] = shoppingCart.orderBuilder[i].quantities[j];
+	        }
+	    }
+	    
+	    // Submit it.
+	    $.ajax({
+	        type: "POST",
+            url: "/ajax/orders", 
+            
+            data: {
+                "itemJSON": itemJSON
+                },
+            done: function(data){
+                console.log(data);
+                console.log("We got done");
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+                console.log(xhr);
+            }
+	    });
+	}
+	
 	
 	
 }
