@@ -7,8 +7,31 @@ class MissionaryController < ApplicationController
   end
   
   def orders
-      
-
+      all_orders = Order.where("companionship_number = ?",user_area())
+			@orders  = []
+			@dates = []
+			all_orders.each_with_index do |order, index1|
+				puts "hey"
+				ord = []
+				#byebug
+				json = order[:orderJSON]
+				@dates.append order[:created_at]
+				#json = JSON.parse(json.gsub('=>', ':'))
+				json = eval(json)
+				json.keys.each_with_index do |name, index2|
+					currentItem = Hash[:name => "", :languages => [], :quantities => [], :id => -1]
+					currentItem[:name] = name
+					currentItem[:id] = index1
+					json[name].keys.each_with_index do |lang, index3|
+						currentItem[:languages].append(lang)	
+						currentItem[:quantities].append(json[name][lang])
+					end
+					ord.append(currentItem.clone())
+					
+				end
+				@orders.append(ord.clone())
+			end
+			#byebug
   end
 
   def orders_new

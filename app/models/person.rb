@@ -11,11 +11,11 @@ class Person < ActiveRecord::Base
     
     
     def get_area
-    	myName = self.name
+    	myName = self.id
     	all_areas = Area.all
     	all_areas.each do |a|
     		if (myName.eql?(a.person_one) || myName.eql?(a.person_two) || myName.eql?(a.person_three))
-    			return a
+    			return a.id
     		end
     	end
 		return nil 

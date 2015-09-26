@@ -34,13 +34,31 @@ if (window.location.pathname == "/admin/users"){
     }
     
     function getTitleForPersonType(type){
+    	if (isNaN(parseInt(type))){
+    		return type;
+    	}
 		if (userTypes.length == 0){
+			/*
 			var fetchedJSON = $.get("/assets/user_types.json", function(data){
-					var parsedJSON = JSON.parse(data);
-					var types_names = Object.keys(parsedJSON["user_types"]);
+					var parsedJSON = data.user_types;
+					
+					types_names = Object.keys(parsedJSON);
 					for (var i = 0; i < types_names.length; i++){
-						userTypes.append(parsedJSON[types_names[i]]["user_type_number"],types_names[i]);
+						userTypes.push(parsedJSON[types_names[i]]["user_type_number"],types_names[i]);
 					}
+			});*/
+			var userRequest = $.ajax({
+				  url: "/assets/user_types.json",
+				  success: function(data){
+					var parsedJSON = data.user_types;
+					types_names = Object.keys(parsedJSON);
+					for (var i = 0; i < types_names.length; i++){
+						userTypes.push([parsedJSON[types_names[i]]["user_type_number"],types_names[i]]);
+					}
+				 },
+				  dataType: "json",
+				  async: false
+				  
 			});
 		}
 		
@@ -49,6 +67,7 @@ if (window.location.pathname == "/admin/users"){
 				return userTypes[i][1];
 			  }
 		}
+		console.log(type);
 		return "Unknown";
 	}
     
@@ -188,7 +207,14 @@ if (window.location.pathname == "/admin/users"){
 if (window.location.pathname == "/admin/orders/inventory" || window.location.pathname == "/admin/orders/inventory"){
 	
 	$(document).ready(function(){
-	
+		categories = ["Book","Pamphlet","Card","Document","Digital Media","Manual"];
+		
+		$.each(categoriesCurrent, function(i,e){
+			if (categories.indexOf(e) < 0){
+				categories.push(e);
+			}
+		});
+		
 		console.log($('meta[name="csrf-token"]').attr("content"));
 		$.ajaxSetup({
 			//

@@ -9,7 +9,8 @@ class SessionsController < ApplicationController
   end
   
   def create
-      user = Person.find_by(user_name: params[:session][:user_name].downcase)
+    #byebug
+      user = Person.find_by(user_name: params[:session][:user_name])
       if user && user.authenticate(params[:session][:password])
           # Log the user in and redirect to the /missionary page. 
           log_in user

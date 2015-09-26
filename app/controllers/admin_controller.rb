@@ -72,7 +72,7 @@ class AdminController < ApplicationController
     		
     		# Update this person's area.
     		#
-    		# byebug
+    	#byebug
 			his_area = new_areas[index]
 			his_zone = new_zones[index]
 			his_areas_index = new_areas_unique.index(his_area)
@@ -81,19 +81,25 @@ class AdminController < ApplicationController
 			if current_areas.any? {|a| a.name == his_area}
 				# It already exists, find it and modify it.
 				area_record = current_areas.where(name: his_area)[0]
-				area_record.person_one = person.name
+				
 				if (areas_current_comp_count == 0) # First time seeing this area, reset it.
+					area_record.person_one = person.id
 					area_record.person_two = nil
 					area_record.person_three = nil
+				elsif (areas_current_comp_count == 1)
+					area_record.person_two = person.id
+				elsif (areas_current_comp_count == 2)
+					area_record.person_three = person.id
 				end
 				area_record.save
 				new_areas_comp_count[his_areas_index] += 1
 			else 
 				#
 				#It doesn't exist, create it.
-				new_area = Area.create(name: his_area, zone: his_zone)
+				new_area = Area.create(name: his_area, zone: his_zone, person_one: person.id)
 				new_area.save
 				current_areas = Area.all
+				new_areas_comp_count.append(1);
 			end
     		
     	end

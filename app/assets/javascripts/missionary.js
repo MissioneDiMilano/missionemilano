@@ -19,36 +19,36 @@ if (window.location.pathname == "/missionary/orders/new"){
 		
 		// An object ot represent an order...
 		// Will be used either to represent the cumulitave "on orders" or the current order...
-		order = {
+		function order() {
 			
 			// Will hold all of the orderItems representing items. 
-			items: [], 
+			this.items = [];
 			
 			// 
-			getCountItemLanguage: function(){
+			this.getCountItemLanguage = function(){
 				
 				
-			},
+			};
 			
 			// Add an item to the count
 			
 		}
 		
 		// Represents a unique item with its languages. There will not be duplicate item records.
-		orderItem = {
-			id: null,
-			name: null,
-			unit_size: null,
-			category: null,
-			languages: [],
-			quantities: [],
-			limits: []
+		function orderItem() {
+			this.id = null ;
+			this.name = null ;
+			this.unit_size = null ;
+			this.category = null ;
+			this.languages = [] ;
+			this.quantities = [] ;
+			this.limits = [];
 		}
 	
 		shoppingCart = {
 			
-			orderBuilder: Object.create(order),
-			currentOrders: Object.create(order)
+			orderBuilder: new order(),
+			currentOrders: new order()
 			
 		}	
 		
@@ -65,13 +65,14 @@ if (window.location.pathname == "/missionary/orders/new"){
 		// Set the shopping-cart-viewer for the first time...
 		
 		// Seed order
+		/*
 		testOrder = Object.create(orderItem);
 		testOrder.id = 1;
 		testOrder.name= "Book of Mormon";
 		testOrder.languages = ["English","German"];
 		testOrder.quantities = [10,20];
 		shoppingCart.orderBuilder.items.push(testOrder);
-		
+		*/
 		updateShoppingCartViewer();
 		
 	/*	$(".shopping-cart").BootSideMenu({
@@ -101,6 +102,12 @@ if (window.location.pathname == "/missionary/orders/new"){
 				 });
 		$(".shopping-cart").first().click();
 		
+		// When you submit the order
+		$(".shopping-cart-submit").on("click", function(){
+			submitOrder();
+		});
+		
+		
 		// When you click a category...
 		$(".category-well").on("click", ".category-selector",function(){
 			
@@ -125,13 +132,14 @@ if (window.location.pathname == "/missionary/orders/new"){
 		$(".item-viewer").on("click", ".iv-order-add", function(){
 			
 			// Update the cart:
-			var newOrder = Object.create(orderItem);
+			var newOrder = null;
+			newOrder = new orderItem();
 			newOrder.name = $(".item-name-view").text();
 			$(".iv-language-view").each(function(i,e){
 				newOrder.languages.push($(e).text());
 			});
 			$(".iv-quantity-view").each(function(i,e){
-				newOrder.quantities.push($(e).text());
+				newOrder.quantities.push($(e).val());
 			})
 			
 			addToShoppingCartBuilder(newOrder);
@@ -240,7 +248,7 @@ if (window.location.pathname == "/missionary/orders/new"){
 					}
 				} else { 
 					// We haven't wanted this yet, create it.
-					onOrderB[itemId] = Object.create(orderItem);
+					onOrderB[itemId] = new orderItem();
 					onOrderB[itemId].languages = [itemLanguage];
 					onOrderB[itemId].quantities = [unfilledQuantity];
 				}
@@ -263,9 +271,10 @@ if (window.location.pathname == "/missionary/orders/new"){
 			var localsList = $("<ul/>").addClass("item-entry-languages");
 			
 			var itemsLanguages = newItems[i].languages;
+			var itemsQuantities = newItems[i].quantities;
 			//var itemsLanguagesKeys = Object.keys(itemsLanguages);
 			for (var j = 0; j<itemsLanguages.length; j++){
-				localsList.append("<li>"+itemsLanguages[j]+"</li>");
+				localsList.append("<li><span class='order-lang-name'>"+itemsLanguages[j]+"</span><span class='order-lang-quantitiy'>"+itemsQuantities[j]+"</span></li>");
 			}
 			$(itemEntry).append(localsList)
 			$(".shopping-cart-list").append(itemEntry);
@@ -280,16 +289,18 @@ if (window.location.pathname == "/missionary/orders/new"){
 				// For each language
 				for (var j = 0; j < newOrderItem.languages.length; j++){
 					var langIndex = shoppingCart.orderBuilder.items[i].languages.indexOf(newOrderItem.languages[j]);
-					console.log(shoppingCart.orderBuilder.items[i]+" - "+newOrderItem.languages[j]);
+					console.log(shoppingCart.orderBuilder.items[i], newOrderItem.languages[j], langIndex);
 					if (langIndex<0){
 						// Doesn't contain this language, add it in.
 						shoppingCart.orderBuilder.items[i].languages.push(newOrderItem.languages[j]);
 						shoppingCart.orderBuilder.items[i].quantities.push(newOrderItem.quantities[j]);
 						added = true;
+						return added;
 					} else {
 						// it contains it. Replace with our new one.
 						shoppingCart.orderBuilder.items[i].quantities[langIndex] = newOrderItem.quantities[j];
 						added = true;
+						return added;
 						
 					}
 				}
@@ -316,27 +327,30 @@ if (window.location.pathname == "/missionary/orders/new"){
 	    var dataJSON = {};
 	    for (var i = 0; i < shoppingCart.orderBuilder.items.length; i++){
 	        for (var j = 0; j < shoppingCart.orderBuilder.items[i].languages.length; j++){
-	            dataJSON[shoppingCart.orderBuilder.items[i].name][shoppingCart.orderBuilder.items[i].languages[j]] = shoppingCart.orderBuilder[i].quantities[j];
+	        	dataJSON[shoppingCart.orderBuilder.items[i].name] = {};
+	            dataJSON[shoppingCart.orderBuilder.items[i].name][shoppingCart.orderBuilder.items[i].languages[j]] = shoppingCart.orderBuilder.items[i].quantities[j];
 	        }
 	    }
-	    
+	    console.log(dataJSON);
 	    // Submit it.
 	    $.ajax({
 	        type: "POST",
             url: "/ajax/orders", 
             
             data: {
-                "itemJSON": itemJSON
+                "itemJSON": dataJSON
                 },
             done: function(data){
+            	console.log("Got it submitted");
                 console.log(data);
                 console.log("We got done");
+                window.location = "/missionary/orders"
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
                 console.log(xhr);
             }
-	    });
+	    }).done(function(){window.location = "/missionary/orders"});
 	}
 	
 	

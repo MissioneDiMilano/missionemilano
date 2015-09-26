@@ -1,0 +1,47 @@
+<div class="panel-group" id="order-accordion">
+		<% @orders.each_with_index do |order, index| %>
+			<div class="panel panel-default">
+				<div class="order-row panel-heading" data-toggle="collapse" data-parent="#order-accordion" href="#collapse<%= order[0][:id] %>">
+					<div class="row">
+						<input name="id" type="hidden" class="order-field order-id-field" value="<%= order[0][:id] %>" />
+						<span class="col-xs-4">
+							<span class="btn-group order-save-delete">
+								<button class="no-collapse btn btn-xs btn-success save-order-btn"><span class="glyphicon glyphicon-ok"></span></button>
+								<button class="no-collapse btn btn-xs btn-danger delete-order-btn"><span class="glyphicon glyphicon-remove"></span></button>
+							</span>
+						</span>
+						<span class="col-xs-4">
+							<input name="order-date" type="text" class="no-collapse order-field order-date-field" value="<%= @dates[index] %>"/>
+						</span>
+					</div>
+				</div>
+				<div class="local-group panel-collapse collapse" id="collapse<%= order[0][:id] %>">
+					<div class="panel-body locals-group">
+						<div class="local-header row">
+							<h3 class="col-xs-4">Language</h3>
+							<h3 class="col-xs-4">In Stock</h3>
+							<h3 class="col-xs-4">Order Limit</h3>
+						</div>
+						<% order.each_with_index do |item, ind| %>
+						    <h3><%= item[:name] %></h3>
+						    <% item[:languages].each_with_index do |lang, ind| %>
+						    	<div class="row item-row">
+						    		<span class="col-xs-4">
+						    			<p class="item-field language-field <%= lang %>">
+						    				<%= lang %>
+						    			</p>
+						    		</span>
+						    		<span class="col-xs-4">
+						    			<input name="number" class="item-field quantity-field" value="<%= item[:quantities][ind] %>" />
+						    		</span>
+						    	</div>
+						    <% end %>
+						<% end %>
+						
+					</div>
+				</div>
+		</div>
+		<% end %>
+		
+		
+	</div>
