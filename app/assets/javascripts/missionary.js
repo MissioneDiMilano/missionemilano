@@ -190,7 +190,7 @@ if (window.location.pathname == "/missionary/orders/new"){
 						<p class='iv-language-view'>"+foundItem.languages[j]+"</p>\
 					</span>\
 					<span class='col-xs-3'>\
-						<input class='iv-quantity-view' type='number' value='"+ getQuantityForItem(fountItem.name, fountItem.languages[j]) +"'/>\
+						<input class='iv-quantity-view' type='number' value='"+ getQuantityForItem(foundItem.name, foundItem.languages[j]) +"'/>\
 					</span>\
 					<span class='col-xs-3'>\
 						<p class='iv-total-viewer'></p>\

@@ -44,7 +44,7 @@ if (window.location.pathname == "/admin/users"){
 			});
 		}
 		
-		for (var i = 0; i < usertypes.length; i++){
+		for (var i = 0; i < userTypes.length; i++){
 			if (userTypes[i][0] == type){
 				return userTypes[i][1];
 			  }
@@ -265,8 +265,12 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			$(newRow).find(".quantity-field").val(10);
 			$(newRow).find(".limit-field").val(0);
 			*/
-			
-			nextIndex = (parseInt($(".local-group").last().attr("id").match(/\d+/))+1).toString();
+			var nextIndex;
+			if ($(".local-group").last().attr("id") != undefined){
+				nextIndex = (parseInt($(".local-group").last().attr("id").match(/\d+/))+1).toString();
+			} else {
+				nextIndex = 1;
+			}
 			
 			newItem = "<div class='panel panel-default'>\
 					<div class='item-row panel-heading' data-toggle='collapse' data-parent='#item-accordion' href='#collapse"+nextIndex+"'>\
@@ -319,7 +323,9 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 		
 			
 			$(newItem).appendTo("#item-accordion");
-		
+			if (categories.length == 0){
+				categories.push("Book");
+			}
 			$.each(categories, function(i,e){
 				$(".panel-default").last().find(".category-selector").append("<option>"+e+"</option>");	
 				
