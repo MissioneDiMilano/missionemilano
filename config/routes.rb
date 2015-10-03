@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'pdf/orders'
+
   post 'ajax/orders'
 
   post 'ajax/special_questions'

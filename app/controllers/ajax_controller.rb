@@ -1,7 +1,7 @@
 class AjaxController < ApplicationController
   def orders
     if params.include?(:itemJSON)
-      
+      byebug
       orderJSON = params[:itemJSON]
       fulfilledJSON = orderJSON.clone
       fulfilledJSON.keys().each do |i|

@@ -59,4 +59,5 @@ gem 'bootstrap-sass'
 #Added per the Heroku request...
 gem 'rails_12factor'
 
-
+# Added prawn to generate pdf documents for orders.
+gem 'prawn'

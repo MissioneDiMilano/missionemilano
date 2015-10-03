@@ -266,8 +266,27 @@ class AdminController < ApplicationController
   		else # We are missing info, do nothing, return error.
   				  response_hash = {:success => false, :new_created => false, :missiong_param => true, :message => "Error in request parameters.", :item_id => nil}
   		end
-  	else
-  		# Error, do nothing.
+  	when "Delete item"
+  		# Delete the item with the given id.
+  		# Prepare the response hash.
+  		
+  	
+  		# Vars for the response_hash
+  		response_message = nil
+  		item_deleted = false
+  		
+  		if params.include?(:id)
+  			begin
+  				Item.destory(params[:id])
+  				item_deleted = true
+  				response_message = "Item with id "+params[:id].to_s+" deleted successfully."
+  			rescue ActiveRecord::RecordNotFound
+  				item_deleted = false
+  				response_message = "Item with id "+params[:id].to_s+" not found, could not be deleted."
+  		end
+  		
+  		
+		response_hash = {:success => item_deleted, :message => response_message}
   	end
   	
   	

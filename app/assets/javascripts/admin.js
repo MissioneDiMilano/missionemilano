@@ -367,6 +367,7 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 		})
 		
 		$("#item-accordion").on("click",".save-item-btn",function(){
+			//console.log("what?");
 			// Gather info and save this item to the server.
 			itemPanel = $(this).closest(".panel");
 			
@@ -387,10 +388,17 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			
 			console.log(languages);
 			
+			// Set change the icon to spinny.
+			$(this).children(".glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
+			var $spinner = $(this).children(".glyphicon");
+			
+			// We want the thing to spin for atleast 1.5 seconds, even if it finishes faster, so we get the time.
+			var startedSpinner = new Date();
+			
 			$.ajax({
 				type: "POST",
 				url: "/admin/orders/inventory/ajax", 
-				
+				dataType: "text",
 				data: {
 					op: "Add/Edit item",
 					id: id,
@@ -401,10 +409,19 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 					'quantities[]': quantities,
 					'limits[]': limits
 					},
-				done: function(data){
+				success: function(data){
 					console.log(data);
 					console.log("We got done");
+					var afterLoad = new Date();
+					var spinTimeRemaining = 1.5 - ((afterLoad - startedSpinner)/1000);
+					if (spinTimeRemaining < 0) {spinTimeRemaining = 0;}
+					setTimeout(function(){
+						$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok");
+					}, spinTimeRemaining*1000);
 				},
+				error: function(jqXHR, textStatus, errorThrown) {
+    			  console.log(textStatus); //error logging
+    			},
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
 					console.log(xhr);
@@ -412,6 +429,57 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			});
 			
 		});
+		
+		$("#item-accordion").on("click",".delete-item-btn",function(){
+			
+			itemPanel = $(this).closest(".panel");
+			
+			id = $(itemPanel).find(".item-id-field").val().toString();
+			console.log(id);
+			
+			
+			// Set change the icon to spinny.
+			$(this).children(".glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
+			var $spinner = $(this).children(".glyphicon");
+			
+			// We want the thing to spin for atleast 1.5 seconds, even if it finishes faster, so we get the time.
+			var startedSpinner = new Date();
+			
+			$.ajax({
+				type: "POST",
+				url: "/admin/orders/inventory/ajax", 
+				dataType: "text",
+				data: {
+					op: "Add/Edit item",
+					id: id,
+					category: category,
+					name: item_name,
+					unit_size: unit_size,
+					'languages[]': languages,
+					'quantities[]': quantities,
+					'limits[]': limits
+					},
+				success: function(data){
+					console.log(data);
+					console.log("We got done");
+					var afterLoad = new Date();
+					var spinTimeRemaining = 1.5 - ((afterLoad - startedSpinner)/1000);
+					if (spinTimeRemaining < 0) {spinTimeRemaining = 0;}
+					setTimeout(function(){
+						$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok");
+					}, spinTimeRemaining*1000);
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+    			  console.log(textStatus); //error logging
+    			},
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+					console.log(xhr);
+				}
+			});
+			
+		});
+		
 		
 		$("#item-accordion").on("click", ".addLanguageRow", function(){
 			console.log("hello?");
@@ -453,8 +521,9 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			}
 		});
 		
-		
+		/*
 		$(".item-row").on("click",".save-item-button", function(){
+			console.log("goodbye?");
 														   // Gather information
 			 category = $(this).parent().parent().find(".category-selector").val();
 			 item_name = $(this).parent().parent().find(".name-field").val();
@@ -500,7 +569,7 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			 });
 			 
 		});
-		
+		*/
 		/*
 		$(".save-item-button").click(function(){unit-size-fieldunit_size-field").val();
 			
