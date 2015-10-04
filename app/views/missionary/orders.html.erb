@@ -1,21 +1,27 @@
+<div class="container-fluid">
+	<span class="row">
+		<%= link_to "New Order", "/missionary/orders/new", :class=>"btn btn-primary" %>
+	</span>
+</div>
 <div class="panel-group" id="order-accordion">
 		<% @orders.each_with_index do |order, index| %>
 			<div class="panel panel-default">
-				<div class="order-row panel-heading" data-toggle="collapse" data-parent="#order-accordion" href="#collapse<%= order[0][:id] %>">
+				<div class="order-row panel-heading" data-toggle="collapse" data-parent="#order-accordion" href="#collapse<%= @ids[index] %>">
 					<div class="row">
-						<input name="id" type="hidden" class="order-field order-id-field" value="<%= order[0][:id] %>" />
-						<span class="col-xs-4">
+						<input name="id" type="hidden" class="order-field order-id-field" value="<%= @ids[index] %>" />
+						<span class="col-xs-2">
 							<span class="btn-group order-save-delete">
 								<button class="no-collapse btn btn-xs btn-success save-order-btn"><span class="glyphicon glyphicon-ok"></span></button>
 								<button class="no-collapse btn btn-xs btn-danger delete-order-btn"><span class="glyphicon glyphicon-remove"></span></button>
 							</span>
 						</span>
-						<span class="col-xs-4">
-							<input name="order-date" type="text" class="no-collapse order-field order-date-field" value="<%= @dates[index] %>"/>
+						<span class="col-xs-6">
+							<h4 class="order-date-label">Ordered on <%= @dates[index] %> by <%= @placers[index] %></h4>
 						</span>
+
 					</div>
 				</div>
-				<div class="local-group panel-collapse collapse" id="collapse<%= order[0][:id] %>">
+				<div class="local-group panel-collapse collapse" id="collapse<%= @ids[index] %>">
 					<div class="panel-body locals-group">
 						<div class="local-header row">
 							<h3 class="col-xs-4">Language</h3>
@@ -42,6 +48,10 @@
 				</div>
 		</div>
 		<% end %>
-		
+		<div class="container-fluid no-orders-label">
+			<span class="text-center">
+				<h1>No Orders. <%= link_to "Create one", "/missionary/orders/new" %> </h1>
+			</span>
+		</div>
 		
 	</div>

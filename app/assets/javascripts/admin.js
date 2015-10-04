@@ -389,7 +389,7 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			console.log(languages);
 			
 			// Set change the icon to spinny.
-			$(this).children(".glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
+			$(this).children(".glyphicon").removeClass("glyphicon-floppy-open").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
 			var $spinner = $(this).children(".glyphicon");
 			
 			// We want the thing to spin for atleast 1.5 seconds, even if it finishes faster, so we get the time.
@@ -416,7 +416,7 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 					var spinTimeRemaining = 1.5 - ((afterLoad - startedSpinner)/1000);
 					if (spinTimeRemaining < 0) {spinTimeRemaining = 0;}
 					setTimeout(function(){
-						$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok");
+						$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok").parent().removeClass("btn-warning").addClass("btn-success");;
 					}, spinTimeRemaining*1000);
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
@@ -442,32 +442,17 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			$(this).children(".glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
 			var $spinner = $(this).children(".glyphicon");
 			
-			// We want the thing to spin for atleast 1.5 seconds, even if it finishes faster, so we get the time.
-			var startedSpinner = new Date();
-			
 			$.ajax({
 				type: "POST",
 				url: "/admin/orders/inventory/ajax", 
 				dataType: "text",
 				data: {
-					op: "Add/Edit item",
+					op: "Delete item",
 					id: id,
-					category: category,
-					name: item_name,
-					unit_size: unit_size,
-					'languages[]': languages,
-					'quantities[]': quantities,
-					'limits[]': limits
-					},
+				},
 				success: function(data){
-					console.log(data);
-					console.log("We got done");
-					var afterLoad = new Date();
-					var spinTimeRemaining = 1.5 - ((afterLoad - startedSpinner)/1000);
-					if (spinTimeRemaining < 0) {spinTimeRemaining = 0;}
-					setTimeout(function(){
 						$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok");
-					}, spinTimeRemaining*1000);
+						$(itemPanel).hide('slow', function(){$(itemPanel).remove()});
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
     			  console.log(textStatus); //error logging
@@ -480,6 +465,11 @@ if (window.location.pathname == "/admin/orders/inventory" || window.location.pat
 			
 		});
 		
+		
+		$("#item-accordion").on("change","input",function(){
+			// We have a change, change the check mark into a save icon.
+			$(this).closest(".panel").find(".glyphicon-ok").removeClass("glyphicon-ok").addClass("glyphicon glyphicon-floppy-open").parent().removeClass("btn-success").addClass("btn-warning");
+		})
 		
 		$("#item-accordion").on("click", ".addLanguageRow", function(){
 			console.log("hello?");

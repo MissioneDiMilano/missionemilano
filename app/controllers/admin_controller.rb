@@ -277,12 +277,13 @@ class AdminController < ApplicationController
   		
   		if params.include?(:id)
   			begin
-  				Item.destory(params[:id])
+  				Item.destroy(params[:id])
   				item_deleted = true
   				response_message = "Item with id "+params[:id].to_s+" deleted successfully."
   			rescue ActiveRecord::RecordNotFound
   				item_deleted = false
   				response_message = "Item with id "+params[:id].to_s+" not found, could not be deleted."
+  			end
   		end
   		
   		

@@ -8,14 +8,23 @@ class MissionaryController < ApplicationController
   
   def orders
       all_orders = Order.where("companionship_number = ?",user_area())
+      @ids = []
 			@orders  = []
 			@dates = []
+			@placers = []
+			
 			all_orders.each_with_index do |order, index1|
 				puts "hey"
 				ord = []
 				#byebug
 				json = order[:orderJSON]
-				@dates.append order[:created_at]
+				
+				createdTime = order[:created_at]
+				
+				@dates.append(createdTime.strftime("%d %B, %Y"))
+				@placers.append(Person.find(order[:ordering_missionary_number]).name)
+				@ids.append(order[:id])
+				
 				#json = JSON.parse(json.gsub('=>', ':'))
 				json = eval(json)
 				json.keys.each_with_index do |name, index2|

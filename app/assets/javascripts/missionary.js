@@ -338,6 +338,7 @@ if (window.location.pathname == "/missionary/orders/new"){
             url: "/ajax/orders", 
             
             data: {
+            	"op": "Receive order",
                 "itemJSON": dataJSON
                 },
             done: function(data){
@@ -355,4 +356,105 @@ if (window.location.pathname == "/missionary/orders/new"){
 	
 	
 	
+}
+else if (window.location.pathname == "/missionary/orders" || window.location.pathname == "/missionary/orders/"){
+	$(document).ready(function(){
+		
+		$("#order-accordion").on("click",".no-collapse",function(e){
+				console.log(e);
+				e.stopPropagation();
+			});
+		
+		$("#order-accordion").on("click",".save-order-btn",function(){
+				//console.log("what?");
+				// Gather info and save this item to the server.
+				itemPanel = $(this).closest(".panel");
+				
+				id = $(itemPanel).find(".order-id-field").val().toString();
+				console.log(id);
+				
+				return alert("TODO: We would save changes to item number "+id.toString()+", but it's not implemented.");
+				
+				// Set change the icon to spinny.
+				$(this).children(".glyphicon").removeClass("glyphicon-floppy-open").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
+				var $spinner = $(this).children(".glyphicon");
+				
+				// We want the thing to spin for atleast 1.5 seconds, even if it finishes faster, so we get the time.
+				var startedSpinner = new Date();
+				
+				$.ajax({
+					type: "POST",
+					url: "/admin/orders/inventory/ajax", 
+					dataType: "text",
+					data: {
+						op: "Add/Edit item",
+						id: id,
+						category: category,
+						name: item_name,
+						unit_size: unit_size,
+						'languages[]': languages,
+						'quantities[]': quantities,
+						'limits[]': limits
+						},
+					success: function(data){
+						console.log(data);
+						console.log("We got done");
+						var afterLoad = new Date();
+						var spinTimeRemaining = 1.5 - ((afterLoad - startedSpinner)/1000);
+						if (spinTimeRemaining < 0) {spinTimeRemaining = 0;}
+						setTimeout(function(){
+							$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok").parent().removeClass("btn-warning").addClass("btn-success");;
+						}, spinTimeRemaining*1000);
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+    				  console.log(textStatus); //error logging
+    				},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+						console.log(xhr);
+					}
+				});
+				
+			});
+		
+		$("#order-accordion").on("click",".delete-order-btn",function(){
+				
+				itemPanel = $(this).closest(".panel");
+				
+				id = $(itemPanel).find(".order-id-field").val().toString();
+				console.log(id);
+				
+				
+				// Set change the icon to spinny.
+				$(this).children(".glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-refresh").addClass("glyphicon-refresh-animate");
+				var $spinner = $(this).children(".glyphicon");
+				
+				$.ajax({
+					type: "POST",
+					url: "/ajax/orders", 
+					dataType: "text",
+					data: {
+						op: "Delete order",
+						id: id,
+					},
+					success: function(data){
+							$spinner.removeClass("glyphicon-refresh-animate").removeClass("glyphicon-refresh").addClass("glyphicon-ok");
+							$(itemPanel).hide('slow', function(){$(itemPanel).remove()});
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+    				  console.log(textStatus); //error logging
+    				},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token',$('meta[name="csrf-token"]').attr('content'));
+						console.log(xhr);
+					}
+				});
+				
+			});
+			
+		if ($(".delete-order-btn").length < 1){
+			$(".no-orders-label").show();
+			$(".new-order-button").hide();
+		}
+	});
 }
