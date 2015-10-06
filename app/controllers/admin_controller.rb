@@ -126,6 +126,70 @@ class AdminController < ApplicationController
   end
 
   def orders
+  	# Will generate the variables necessary for the /admin/orders page, where you will see and sort placed orders.
+  	# Check the get variable for preference in either combining areas orders or keeping them separate.
+  	#byebug
+  	combine = true # By default we do.
+  	if (params.include?("combine") && params[:combine] == "false")
+  		combine = false
+  	end
+  	
+  	@orders = Hash.new
+  	
+  	# Each entry contains a hash with...
+  	# ids = [array of ids of represented orders]
+  	# zone = zone of area
+  	# date = date of most oldest order
+  	# order_size = count of all items requested
+  	# fulfilled = whether the order is fulfilled or not.
+
+
+  	
+  	all_orders = Order.all
+  	all_orders.each do |order|
+			#byebug
+			area = order.area
+ 			if (area.nil?)
+  			# This order is for a non-existant area. Destroy it.
+  			order.destroy()
+  			next
+  		end
+			area_name = order.area_name
+
+  		
+ 			contained = @orders.keys().include?(area_name)
+  		
+  		if combine && contained# If we've got to combine, and if we already have this area an order....
+  				#byebug
+  				@orders[area_name][0][:id].append(order.id)
+  				if @orders[area_name][0][:date] > order.created_at
+  					@ordes[area_name][0][:date] = order.created_at
+  				end
+  				@orders[area_name][0][:order_size] += order.size_remaining
+  				@orders[area_name][0][:fulfilled] &&= order.fulfilled?
+  		elsif contained
+  		  	this_hash = Hash.new
+  				this_hash[:id] = [order.id]
+  				this_hash[:zone] = order.area_zone()
+  				this_hash[:date] = order.created_at
+  				this_hash[:order_size] = order.size_remaining
+  				this_hash[:fulfilled] = order.fulfilled?
+  				@orders[area_name].append(this_hash)
+  		else
+  			  this_hash = Hash.new
+  				this_hash[:id] = [order.id]
+  				this_hash[:zone] = order.area_zone()
+  				this_hash[:date] = order.created_at
+  				this_hash[:order_size] = order.size_remaining
+  				this_hash[:fulfilled] = order.fulfilled?
+  				@orders[area_name] = [this_hash]
+   		end
+  		
+  		
+  	end
+  	
+  	
+  	
   end
 
   def orders_fill

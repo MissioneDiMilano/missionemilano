@@ -93,7 +93,7 @@ if (window.location.pathname == "/admin/users"){
     		$("#user_names").val(user_names.join("|"));
     		$("#types").val(positions.join("|"));
     		$("#areas").val(areas.join("|"));
-    		$("#zones").val(areas.join("|"));
+    		$("#zones").val(zones.join("|"));
     		alert(names.length);
     	});
     

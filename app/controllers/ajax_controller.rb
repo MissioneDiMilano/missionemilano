@@ -9,7 +9,7 @@ class AjaxController < ApplicationController
     case op
     when "Receive order"
       if params.include?(:itemJSON)
-        byebug
+        # byebug
         orderJSON = params[:itemJSON]
         fulfilledJSON = orderJSON.clone
         fulfilledJSON.keys().each do |i|

@@ -1,2 +1,74 @@
-<h1>Admin#orders</h1>
-<p>Find me in app/views/admin/orders.html.erb</p>
+<h1>Orders</h1>
+
+<table class="table-striped table-hover orders-viewer-table">
+    <thead>
+        <tr>
+            <td>
+                <h3>Select:</h3>
+            </td>
+            <td>
+                <h3>Zone</h3>
+            </td>
+            <td>
+                <h3>Area</h3>
+            </td>
+            <td>
+                <h3>Date</h3>
+            </td>
+            <td>
+                <h3>Order Size</h3>
+            </td>
+            <td>
+                <h3>Fulfilled</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox"/>
+            </td>
+            <td>
+                <input type="text"/>
+            </td>
+            <td>
+                <input type="text"/>
+            </td>
+            <td>
+                <input type="date"/>
+            </td>
+            <td>
+                <input type="number"/>
+            </td>
+            <td>
+                <input type="checkbox"/>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <% @orders.each do |name, orders| %>
+            <% orders.each do |values| %>
+                <tr>
+                    <td>
+                        <input type="checkbox"/>
+                    </td>
+                    <td>
+                        <%= values[:zone] %>
+                    </td>
+                    <td>
+                        <%= name %>
+                    </td>
+                    <td>
+                        <%= values[:date].strftime("%d %B, %Y") %>
+                    </td>
+                    <td>
+                        <%= values[:order_size] %>
+                    </td>
+                    <td>
+                        <span class="glyphicon <%= values[:fulfilled] ? 'glyphicon-ok' : 'glyphicon-list-alt' %>"></span>
+                    </td>
+                    
+                    
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
