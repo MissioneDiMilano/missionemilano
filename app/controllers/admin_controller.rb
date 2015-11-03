@@ -2,6 +2,9 @@ class AdminController < ApplicationController
 	
 	before_action :require_login
 	
+	def index 
+		
+	end
 	
   def users # For User admin
     @users = Person.where("people.person_type > 3") # Get all missionary users.

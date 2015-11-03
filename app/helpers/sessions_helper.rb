@@ -23,11 +23,17 @@ module SessionsHelper
     	!current_user.nil?	
     end
     
+    def user_is_admin?
+       unless logged_in? && current_user.person_type <= 4
+            return false
+        end
+    end
+    
     def log_out
     	session.delete(:user_id)
     	@current_user = nil
     end
     
-
+    
     
 end

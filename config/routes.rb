@@ -44,6 +44,10 @@ Rails.application.routes.draw do
 
   get 'missionary/parent_contact'
 
+  get 'admin', to: 'admin#index'
+
+  get 'admin/index'
+  
   get 'admin/users'
   
   post 'admin/users'

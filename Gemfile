@@ -65,3 +65,7 @@ gem 'rails_12factor'
 
 # Added prawn to generate pdf documents for orders.
 gem 'prawn'
+
+# Added barby to generate the barcode for orders pdfs
+gem 'barby'
+gem 'chunky_png'

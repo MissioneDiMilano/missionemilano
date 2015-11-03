@@ -14,7 +14,7 @@ class MissionaryController < ApplicationController
 			@placers = []
 			
 			all_orders.each_with_index do |order, index1|
-				puts "hey"
+				#byebug
 				ord = []
 				#byebug
 				json = order[:orderJSON]
@@ -26,7 +26,7 @@ class MissionaryController < ApplicationController
 				@ids.append(order[:id])
 				
 				#json = JSON.parse(json.gsub('=>', ':'))
-				json = eval(json)
+				#json = eval(json) # no longer needed since the introduction of hstore
 				json.keys.each_with_index do |name, index2|
 					currentItem = Hash[:name => "", :languages => [], :quantities => [], :id => -1]
 					currentItem[:name] = name

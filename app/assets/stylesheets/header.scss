@@ -1,0 +1,36 @@
+.nav-link-icon {
+    font-size: 1.5em;
+}
+
+.nav-link:hover .nav-link-icon {
+    display: none;
+}
+
+.nav-link .nav-link-text {
+    display: none;
+}
+
+.nav-link:hover .nav-link-text {
+    display: inline-block;
+}
+
+.nav-link .nav-link-text h4 {
+    margin: 0px;
+}
+
+.navbar-center {
+    text-align: center;
+}
+
+.navbar-center .nav-centered {
+     display: inline-block;
+     float: none;
+     vertical-align: top;
+}
+
+.center-nav {
+    text-align: center;
+}
+.nav-link-container {
+    width: 100px;
+}
