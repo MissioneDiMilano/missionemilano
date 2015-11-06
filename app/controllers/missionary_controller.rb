@@ -7,6 +7,7 @@ class MissionaryController < ApplicationController
   end
   
   def orders
+  		#byebug
       all_orders = Order.where("companionship_number = ?",user_area())
       @ids = []
 			@orders  = []
@@ -17,6 +18,8 @@ class MissionaryController < ApplicationController
 				#byebug
 				ord = []
 				#byebug
+				order.deserialize_orders()
+				
 				json = order[:orderJSON]
 				
 				createdTime = order[:created_at]
@@ -26,7 +29,7 @@ class MissionaryController < ApplicationController
 				@ids.append(order[:id])
 				
 				#json = JSON.parse(json.gsub('=>', ':'))
-				#json = eval(json) # no longer needed since the introduction of hstore
+				json = eval(json) 
 				json.keys.each_with_index do |name, index2|
 					currentItem = Hash[:name => "", :languages => [], :quantities => [], :id => -1]
 					currentItem[:name] = name

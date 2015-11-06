@@ -9,9 +9,9 @@ class AjaxController < ApplicationController
     case op
     when "Receive order"
       if params.include?(:itemJSON)
-        byebug
+        #byebug
         orderJSON = params[:itemJSON].to_unsafe_h
-        fulfilledJSON = orderJSON.clone
+        fulfilledJSON = params[:itemJSON].to_unsafe_h.clone
         fulfilledJSON.keys().each do |i|
           fulfilledJSON[i].keys().each do |j|
             fulfilledJSON[i][j] = 0
@@ -19,6 +19,9 @@ class AjaxController < ApplicationController
         end
         area = user_area()
         user = current_user().id
+        
+        orderJSON = Order.serialize_order(orderJSON)
+        fulfilledJSON = Order.serialize_order(fulfilledJSON)
         
         order = Order.create(:companionship_number => area, :ordering_missionary_number => user, :fulfilled => 0, :orderJSON => orderJSON, :fulfilledJSON => fulfilledJSON)
         @success = true;

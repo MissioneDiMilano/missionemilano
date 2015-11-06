@@ -100,6 +100,34 @@ class Order < ActiveRecord::Base
        return nowFulfilled
     end
     
+    # Used to put a hash in a sort of serialized state where it can be saved as text
+    # If given the hash {"The Book of Mormon"=>{"English"=>"3", "Italian"=>4}}
+    # it will call Hash.inspect yielding "{\"The Book of Mormon\"=>{\"English\"=>\"3\", \"Italian\"=>4}}"
+    # It will then call gsub("\"","%kcbDblQt") on that object
+    # It should return "{%kcbDblQtThe Book of Mormon%kcbDblQt=>{%kcbDblQtEnglish%kcbDblQt=>%kcbDblQt3%kcbDblQt, %kcbDblQtItalian%kcbDblQt=>4}}"
+    def self.serialize_order(order1)
+        return order1.inspect().gsub("\"","%kcbDblQt")
+    end
+    
+    def self.deserialize_order(serialized_order1)
+        return serialized_order1.gsub("%kcbDblQt","\"")
+    end
+    
+    def deserialize_orders
+       self.orderJSON = Order.deserialize_order(self.orderJSON)
+       self.fulfilledJSON = Order.deserialize_order(self.fulfilledJSON)
+    end
+    
+    def serialize_orders
+        self.orderJSON = serialize_order(self.orderJSON)
+       self.fulfilledJSON = serialize_order(self.fulfilledJSON)
+    end
+    
+    def safe_save
+        serialize_orders()
+        self.save
+    end
+    
     def is_fulfilled!
        self.fulfilled = is_fulfilled?
     end
